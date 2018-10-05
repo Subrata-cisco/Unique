@@ -92,7 +92,20 @@ public class FindEachMissingFile {
 		Path path = Paths.get(outPutFile);
 		totalInfoSet.stream().forEach(string -> {
 			try {
-				Files.write(path,(string + "\n").getBytes(),StandardOpenOption.APPEND);
+				int year = Integer.valueOf(string
+						.substring(0, 4));
+				int month = Integer.valueOf(string
+						.substring(4, 6));
+				int day = Integer.valueOf(string
+						.substring(6, 8));
+				int hour = Integer.valueOf(string
+						.substring(8, string.length()));
+				
+				StringBuilder sb = new StringBuilder();
+				sb.append("Missing file for Year :" + year
+						+ " month :" + month + " day :" + day
+						+ " hour :" + hour);
+				Files.write(path,(sb.toString() + "\n").getBytes(),StandardOpenOption.APPEND);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
