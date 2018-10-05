@@ -9,7 +9,6 @@ import java.time.YearMonth;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class FindEachMissingFile {
 
@@ -35,56 +34,49 @@ public class FindEachMissingFile {
 			infoSet.add(hourMonthString);
 		});
 		
-		
-		Set<String>  totalInfoData = generateDataForYear(forYear);
-		totalInfoData.removeAll(infoSet);
-		
-		/*totalInfoData.stream().forEach(string -> {
-			int year = Integer.valueOf(string
-					.substring(0, 4));
-			int month = Integer.valueOf(string
-					.substring(4, 6));
-			int day = Integer.valueOf(string
-					.substring(6, 8));
-			int hour = Integer.valueOf(string
-					.substring(8, string.length()));
+		if(infoSet.size() > 0){
+			String lastDate = ((TreeSet<String>) infoSet).last();
+			Set<String>  totalInfoData = generateDataForYear(forYear,lastDate);
+			totalInfoData.removeAll(infoSet);
+			print(totalInfoData,outputFile);
 			
-			System.out.println("Missing file for Year :" + year
-					+ " month :" + month + " day :" + day
-					+ " hour :" + hour);
-		});*/
+			//totalInfoData.stream().forEach(System.out::println);
+		}
 		
-		print(totalInfoData,outputFile);
+		
+		
 	}
 	
-	private Set<String> generateDataForYear(String yearString){
+	private Set<String> generateDataForYear(String yearString,String upto){
 		if(yearString == null){
 			throw new RuntimeException("Year is not valid.. "+yearString);
 		}
 		int year = Integer.valueOf(yearString);
 		Set<String> totalInfoSet = new TreeSet<>();
 		
-		
-		IntStream.rangeClosed(1, 12).forEach(month -> {
+		outerloop:
+		for(int month=1;month<=12;month++){
 			YearMonth yearMonthObject = YearMonth.of(year, month);
 			int daysInMonth = yearMonthObject.lengthOfMonth(); 
 			
-			IntStream.rangeClosed(1, daysInMonth).forEach(day -> {
-				
-				IntStream.rangeClosed(0, 23).forEach(hour -> {
+			for(int day=1;day<=daysInMonth;day++){
 					
+				for(int hour=0;hour<24;hour++){
 					StringBuilder sb = new StringBuilder();
 					sb.append(year)
 					  .append(String.format("%02d", month))
 					  .append(String.format("%02d", day))
 					  .append(String.format("%02d", hour));
 					
-					totalInfoSet.add(sb.toString());
-				});
-				
-			});
+					if(sb.toString().equals(upto)){
+						break outerloop;
+					}else{
+						totalInfoSet.add(sb.toString());
+					}
+				}
+			}		
 			
-		});
+		}
 		return totalInfoSet;
 	}
 	
@@ -92,20 +84,7 @@ public class FindEachMissingFile {
 		Path path = Paths.get(outPutFile);
 		totalInfoSet.stream().forEach(string -> {
 			try {
-				int year = Integer.valueOf(string
-						.substring(0, 4));
-				int month = Integer.valueOf(string
-						.substring(4, 6));
-				int day = Integer.valueOf(string
-						.substring(6, 8));
-				int hour = Integer.valueOf(string
-						.substring(8, string.length()));
-				
-				StringBuilder sb = new StringBuilder();
-				sb.append("Missing file for Year :" + year
-						+ " month :" + month + " day :" + day
-						+ " hour :" + hour);
-				Files.write(path,(sb.toString() + "\n").getBytes(),StandardOpenOption.APPEND);
+				Files.write(path,(string + "\n").getBytes(),StandardOpenOption.APPEND);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
