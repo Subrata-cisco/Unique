@@ -1,4 +1,4 @@
-package com.ranguard.mh;
+package com.company.mh;
 
 import java.io.IOException;
 import java.nio.file.Files;
