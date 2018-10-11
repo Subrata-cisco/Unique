@@ -5,11 +5,12 @@ import java.io.IOException;
 public class Client {
 	public static void main(String[] args) throws IOException {
 		// files from where the files will be picked up..
-		String inputFile = "C:\\Users\\sususaha.ORADEV\\Desktop\\consultB\\fileRepo\\input.txt";
-		String outPutFile = "C:\\Users\\sususaha.ORADEV\\Desktop\\consultB\\fileRepo\\out.txt";
+		String firstFile = "C:\\Users\\sususaha.ORADEV\\Desktop\\personal\\consultB\\fileRepo\\first.txt";
+		String secondFile = "C:\\Users\\sususaha.ORADEV\\Desktop\\personal\\consultB\\fileRepo\\second.txt";
+		String outPutFile = "C:\\Users\\sususaha.ORADEV\\Desktop\\personal\\consultB\\fileRepo\\out.txt";
 		
-		FindEachMissingFile finder = new FindEachMissingFile();
-		finder.findInfo(inputFile,outPutFile,"2018");
+		FindMissingDataBetweenTwoFiles finder = new FindMissingDataBetweenTwoFiles();
+		finder.findInfo(firstFile,secondFile,outPutFile,"2018");
 	}
 	
 }
