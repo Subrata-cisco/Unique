@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class FindMissingDataBetweenTwoFiles {
@@ -20,13 +19,13 @@ public class FindMissingDataBetweenTwoFiles {
 	}
 	
 	private Set<String> getDataFromFile(String filePath) throws IOException{
-		Set<String> infoSet = new TreeSet<>();
+		//Set<String> infoSet = new TreeSet<>();
 		Set<String> set = Files.lines(Paths.get(filePath))
-				.filter(line -> line.endsWith(".csv.gz"))
+				//.filter(line -> line.endsWith(".csv.gz"))
 				.map(String::trim)
 				.sorted().collect(Collectors.toSet());
 		
-		set.stream().forEach( line -> {
+		/*set.stream().forEach( line -> {
 			String[] fileNameArray = line.split("_");
 			if (fileNameArray.length != 7) {
 				throw new RuntimeException(
@@ -34,13 +33,13 @@ public class FindMissingDataBetweenTwoFiles {
 			}
 
 			String hourMonthString = fileNameArray[3];
-			if(hourMonthString == null || hourMonthString.length() != 10){
-				throw new RuntimeException("hour month string (3rd) word is not according to convention..");
+			if(line == null || line.length() != 10){
+				throw new RuntimeException("hour month string is not according to convention..");
 			}
 			infoSet.add(hourMonthString);
-		});
+		});*/
 		
-		return infoSet;
+		return set;
 	}
 	
 	private void print(Set<String>  totalInfoSet,String outPutFile){
