@@ -1,4 +1,4 @@
-package com.autodesk.delivery.mastertool;
+package com.supi.delivery.mastertool;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
